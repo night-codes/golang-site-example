@@ -1,0 +1,31 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+header {
+	background: url("header.jpg") bottom;
+	padding: 50px;
+	color: rgba(255, 255, 255, 0.7);
+	font-size: 3rem;
+}
+.container {
+	max-width: 1024px;
+	margin: 0 auto;
+}
+form>div {
+	margin-top: 1rem;
+	font-size: 1rem;
+}
+input, textarea {
+	padding: 0.5rem;
+}
+.err {
+	background: #fee;
+	color: #873A3A;
+	padding: 1.5rem;
+}
+.ok {
+	background: #efe;
+	color: #115F17;
+	padding: 1.5rem;
+}
