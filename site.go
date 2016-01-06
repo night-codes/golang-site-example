@@ -40,5 +40,13 @@ func main() {
 		c.HTML(200, "index.html", ret)
 	})
 
+	admin := r.Group("/admin")
+	admin.Use(gin.BasicAuth(map[string]string{"admin": "secret"}))
+	admin.GET("/", func(c *gin.Context) {
+		fbks := []feedback{}
+		session.DB("mydb").C("feedbacks").Find(gin.H{}).All(&fbks)
+		c.HTML(200, "admin.html", gin.H{"feedbacks": fbks})
+	})
+
 	r.Run(":8080")
 }

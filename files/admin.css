@@ -1,0 +1,57 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+header {
+	background: #446688;
+	padding: 10px;
+	color: rgba(255, 255, 255, 0.7);
+	font-size: 3rem;
+}
+.container {
+	max-width: 1024px;
+	margin: 0 auto;
+}
+form>div {
+	margin-top: 1rem;
+	font-size: 1rem;
+}
+input, textarea {
+	padding: 0.5rem;
+}
+.err {
+	background: #fee;
+	color: #873A3A;
+	padding: 1.5rem;
+}
+.ok {
+	background: #efe;
+	color: #115F17;
+	padding: 1.5rem;
+}
+table {
+	border-radius: 3px;
+	width: 100%;
+	border: #e3e3e3 1px solid;
+	padding: 0px;
+	background: #ffffff;
+	padding-top: 0px;
+	border-collapse: collapse;
+	font-size: 96%;
+}
+table tr>th {
+    padding: 0.5rem 0.7rem;
+    background-color: #3D464D;
+    border: #3D464D 1px dotted;
+    border-right: #999999 1px dotted;
+    color: #ffffff;
+    border-top: 1px #777777 solid !important;
+    border-right: 1px #777777 solid !important
+}
+table tr>td {
+    padding: 0.5rem 0.7rem;
+    border: #e3e3e3 1px solid;
+}
+table tr:nth-child(odd)>td {
+	background-color: #f8f8f8;
+}
