@@ -6,9 +6,9 @@ import (
 )
 
 type feedback struct {
-	Name    string `form:"name" binding:"required,min=3,max=40"`
-	Title   string `form:"title" binding:"required,max=150"`
-	Message string `form:"message" binding:"required"`
+	Name    string `form:"name" bson:"name" binding:"required,min=3,max=40"`
+	Title   string `form:"title" bson:"title" binding:"required,max=150"`
+	Message string `form:"message" bson:"message" binding:"required"`
 }
 
 func main() {
@@ -22,19 +22,19 @@ func main() {
 	r.LoadHTMLGlob("templates/*")
 
 	r.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.html", gin.H{"title": "Сайт-визитка", "name": `taliban`})
+		c.HTML(200, "index.html", gin.H{"title": "My website", "name": `taliban`})
 	})
 
 	r.POST("/", func(c *gin.Context) {
 		fb := feedback{}
-		ret := gin.H{"title": "Сайт-визитка", "name": `taliban`}
+		ret := gin.H{"title": "Website", "name": `taliban`}
 		if err := c.Bind(&fb); err != nil {
-			ret["err"] = "Упс, ошибка: " + err.Error()
+			ret["err"] = "Oops, an error: " + err.Error()
 		} else {
 			if err := session.DB("mydb").C("feedbacks").Insert(fb); err != nil {
-				ret["err"] = "Неожиданная ошибка. Зайдите к нам попозже."
+				ret["err"] = "Unexpected error. Come back to us later."
 			} else {
-				ret["ok"] = "Спасибо за ваш отзыв!"
+				ret["ok"] = "Thanks for your feedback!"
 			}
 		}
 		c.HTML(200, "index.html", ret)
