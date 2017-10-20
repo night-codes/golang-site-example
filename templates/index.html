@@ -1,32 +1,45 @@
 <html>
-	<head>
-		<title>{{.title}}</title>
-		<link href="files/style.css" rel="stylesheet">
-	</head>
-    	<body>
-		<header><div class="container">{{.title}}</div></header>
-		<div class="container"><h1>Привет {{.name}}</h1></div>
-		<div class="container">
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		</div>
-		<div class="container">
-			<h2>Оставить отзыв</h2>
-			<form method="post">
-				<div><input placeholder="имя" type="text" name="name" required="required"></div>
-				<div><input placeholder="тема" type="text" name="title" required="required"></div>
-				<div><textarea placeholder="сообщение" rows="5" cols="30" name="message" required="required"></textarea></div>
-				<div><input type="submit" value="Отправить"></div>
-			</form>
-			{{if .ok}}
-				<div class="ok">
-					{{.ok}}
-				</div>
-			{{end}}
-			{{if .err}}
-				<div class="err">
-					{{.err}}
-				</div>
-			{{end}}
-		</div>
-	</body>
+
+<head>
+    <title>{{.title}}</title>
+    <link href="files/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="container">{{.title}}</div>
+    </header>
+    <div class="container">
+        <h1>Hello {{.name}}!</h1></div>
+    <div class="container">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+    <div class="container">
+        <h2>Give feedback</h2>
+        <form method="post">
+            <div>
+                <input placeholder="имя" type="text" name="name" required="required">
+            </div>
+            <div>
+                <input placeholder="тема" type="text" name="title" required="required">
+            </div>
+            <div>
+                <textarea placeholder="message" rows="5" cols="30" name="message" required="required"></textarea>
+            </div>
+            <div>
+                <input type="submit" value="Send!">
+            </div>
+        </form>
+        {{if .ok}}
+        <div class="ok">
+            {{.ok}}
+        </div>
+        {{end}} {{if .err}}
+        <div class="err">
+            {{.err}}
+        </div>
+        {{end}}
+    </div>
+</body>
+
 </html>

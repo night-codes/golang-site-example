@@ -1,14 +1,16 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/night-codes/tokay"
 	"gopkg.in/mgo.v2"
 )
 
+type obj map[string]interface{}
+
 type feedback struct {
-	Name    string `form:"name" bson:"name" binding:"required,min=3,max=40"`
-	Title   string `form:"title" bson:"title" binding:"required,max=150"`
-	Message string `form:"message" bson:"message" binding:"required"`
+	Name    string `form:"name" bson:"name" valid:"required,min(3),max(40)"`
+	Title   string `form:"title" bson:"title" valid:"required,max(150)"`
+	Message string `form:"message" bson:"message" valid:"required"`
 }
 
 func main() {
@@ -17,17 +19,16 @@ func main() {
 		panic(err)
 	}
 
-	r := gin.Default()
-	r.Static("files", "./files")
-	r.LoadHTMLGlob("templates/*")
+	r := tokay.New()
+	r.Static("/files", "./files")
 
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.html", gin.H{"title": "My website", "name": `taliban`})
+	r.GET("/", func(c *tokay.Context) {
+		c.HTML(200, "index", obj{"title": "My website", "name": `My Friend`})
 	})
 
-	r.POST("/", func(c *gin.Context) {
+	r.POST("/", func(c *tokay.Context) {
 		fb := feedback{}
-		ret := gin.H{"title": "Website", "name": `taliban`}
+		ret := obj{"title": "Website", "name": `taliban`}
 		if err := c.Bind(&fb); err != nil {
 			ret["err"] = "Oops, an error: " + err.Error()
 		} else {
@@ -37,16 +38,15 @@ func main() {
 				ret["ok"] = "Thanks for your feedback!"
 			}
 		}
-		c.HTML(200, "index.html", ret)
+		c.HTML(200, "index", ret)
 	})
 
-	admin := r.Group("/admin")
-	admin.Use(gin.BasicAuth(map[string]string{"admin": "secret"}))
-	admin.GET("/", func(c *gin.Context) {
+	admin := r.Group("/admin", tokay.BasicAuth("admin", "secret"))
+	admin.GET("/", func(c *tokay.Context) {
 		fbks := []feedback{}
-		session.DB("mydb").C("feedbacks").Find(gin.H{}).All(&fbks)
-		c.HTML(200, "admin.html", gin.H{"feedbacks": fbks})
+		session.DB("mydb").C("feedbacks").Find(obj{}).All(&fbks)
+		c.HTML(200, "admin", obj{"feedbacks": fbks})
 	})
 
-	r.Run(":8080")
+	panic(r.Run(":8080"))
 }
