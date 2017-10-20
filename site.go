@@ -28,7 +28,7 @@ func main() {
 
 	r.POST("/", func(c *tokay.Context) {
 		fb := feedback{}
-		ret := obj{"title": "Website", "name": `taliban`}
+		ret := obj{"title": "My website", "name": `My Friend`}
 		if err := c.Bind(&fb); err != nil {
 			ret["err"] = "Oops, an error: " + err.Error()
 		} else {
@@ -43,9 +43,9 @@ func main() {
 
 	admin := r.Group("/admin", tokay.BasicAuth("admin", "secret"))
 	admin.GET("/", func(c *tokay.Context) {
-		fbks := []feedback{}
-		session.DB("mydb").C("feedbacks").Find(obj{}).All(&fbks)
-		c.HTML(200, "admin", obj{"feedbacks": fbks})
+		feedbacks := []feedback{}
+		session.DB("mydb").C("feedbacks").Find(obj{}).All(&feedbacks)
+		c.HTML(200, "admin", obj{"feedbacks": feedbacks})
 	})
 
 	panic(r.Run(":8080"))
