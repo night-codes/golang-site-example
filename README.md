@@ -1,5 +1,5 @@
 # Golang example site
-Example represent small example site with admin-panel.
+Example represent small site with admin-panel.
 
 ## Requirements
 
