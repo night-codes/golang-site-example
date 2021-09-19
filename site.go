@@ -2,22 +2,27 @@ package main
 
 import (
 	"github.com/night-codes/tokay"
-	"gopkg.in/mgo.v2"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
-type obj map[string]interface{}
-
-type feedback struct {
-	Name    string `form:"name" bson:"name" valid:"required,min(3),max(40)"`
-	Title   string `form:"title" bson:"title" valid:"required,max(150)"`
-	Message string `form:"message" bson:"message" valid:"required"`
-}
+type (
+	obj      map[string]interface{}
+	feedback struct {
+		ID      uint64 `form:"id" gorm:"primary_key"`
+		Name    string `form:"name" valid:"required,min(3),max(40)"`
+		Title   string `form:"title" valid:"required,max(150)"`
+		Message string `form:"message" valid:"required"`
+	}
+)
 
 func main() {
-	session, err := mgo.Dial(":27017") //mongodb connect
+	db, err := gorm.Open(sqlite.Open("site.db"), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
+
+	db.AutoMigrate(&feedback{})
 
 	r := tokay.New()
 	r.Static("/files", "./files")
@@ -32,19 +37,20 @@ func main() {
 		if err := c.Bind(&fb); err != nil {
 			ret["err"] = "Oops, an error: " + err.Error()
 		} else {
-			if err := session.DB("mydb").C("feedbacks").Insert(fb); err != nil {
+			if err := db.Save(&fb).Error; err != nil {
 				ret["err"] = "Unexpected error. Come back to us later."
 			} else {
 				ret["ok"] = "Thanks for your feedback!"
 			}
 		}
+
 		c.HTML(200, "index", ret)
 	})
 
 	admin := r.Group("/admin", tokay.BasicAuth("admin", "secret"))
 	admin.GET("/", func(c *tokay.Context) {
 		feedbacks := []feedback{}
-		session.DB("mydb").C("feedbacks").Find(obj{}).All(&feedbacks)
+		db.Find(&feedbacks)
 		c.HTML(200, "admin", obj{"feedbacks": feedbacks})
 	})
 
